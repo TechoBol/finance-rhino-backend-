@@ -1,0 +1,26 @@
+import prisma from "../config/db";
+
+export const getAllFondosAvanceRepository = async (
+  month?: number,
+  year?: number
+) => {
+  return prisma.fondoAvance.findMany({
+    where: {
+      ...(month !== undefined && year !== undefined ? { month, year } : {}),
+    },
+    orderBy: { createdAt: "asc" },
+  });
+};
+
+export const createFondoAvanceRepository = async (data: {
+  name: string;
+  amount: number;
+  month: number;
+  year: number;
+}) => {
+  return prisma.fondoAvance.create({ data });
+};
+
+export const deleteFondoAvanceRepository = async (id: number) => {
+  return prisma.fondoAvance.delete({ where: { id } });
+};
