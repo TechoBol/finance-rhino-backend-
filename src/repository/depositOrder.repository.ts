@@ -336,7 +336,7 @@ export const updateRevitionStatusRepository = async (
 
       // 6. Iterar depósitos
       for (const deposit of deposits) {
-        const amountBs = Number(deposit.amount) / 6.95;
+        const amountBs = Number(deposit.amount);
         //const rounded = Math.round(amountBs * 100) / 100;
 
         const existing = existingMap.get(deposit.id);

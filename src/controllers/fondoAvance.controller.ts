@@ -5,13 +5,9 @@ import {
   deleteFondoAvanceRepository,
 } from "../repository/fondoAvance.repository";
 
-export const getAllFondosAvance = async (req: Request, res: Response) => {
+export const getAllFondosAvance = async (_req: Request, res: Response) => {
   try {
-    const { month, year } = req.query;
-    const data = await getAllFondosAvanceRepository(
-      month !== undefined ? Number(month) : undefined,
-      year !== undefined ? Number(year) : undefined
-    );
+    const data = await getAllFondosAvanceRepository();
     res.json(data);
   } catch {
     res.status(500).json({ error: "Error obteniendo fondos" });

@@ -1,13 +1,7 @@
 import prisma from "../config/db";
 
-export const getAllFondosAvanceRepository = async (
-  month?: number,
-  year?: number
-) => {
+export const getAllFondosAvanceRepository = async () => {
   return prisma.fondoAvance.findMany({
-    where: {
-      ...(month !== undefined && year !== undefined ? { month, year } : {}),
-    },
     orderBy: { createdAt: "asc" },
   });
 };

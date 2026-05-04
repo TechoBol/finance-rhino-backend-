@@ -47,7 +47,7 @@ export const registerExtraExpense = async (data: any, user: any) => {
     const fullName = dbUser ? `${dbUser.name} ${dbUser.lastName}` : user.email;
 
     // 2. Crear el cashflow usando datos del gasto
-    const amountBs = Number(data.amount) / 6.95;
+    const amountBs = Number(data.amount);
     //const rounded = Math.round(amountBs * 100) / 100;
     const cashFlow = await tx.cashFlow.create({
       data: {
@@ -163,7 +163,7 @@ export const updateExtraExpensesRepository = async (
     });
 
     // 2. Conversión monto
-    const amountBs = Number(data.amount) / 6.95;
+    const amountBs = Number(data.amount);
     //const rounded = Math.round(amountBs * 100) / 100;
 
     // 3. Usuario
