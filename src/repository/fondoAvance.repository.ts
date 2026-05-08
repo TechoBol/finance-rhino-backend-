@@ -6,13 +6,17 @@ export const getAllFondosAvanceRepository = async () => {
   });
 };
 
-export const createFondoAvanceRepository = async (data: {
-  name: string;
-  amount: number;
-  month: number;
-  year: number;
-}) => {
-  return prisma.fondoAvance.create({ data });
+export const createFondoAvanceRepository = async (
+  data: {
+    name: string;
+    amount: number;
+    currency: string;
+  }
+) => {
+  console.log(data)
+  return prisma.fondoAvance.create({
+    data,
+  });
 };
 
 export const deleteFondoAvanceRepository = async (id: number) => {

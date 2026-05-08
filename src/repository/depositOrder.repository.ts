@@ -356,7 +356,7 @@ export const updateRevitionStatusRepository = async (
                     "Ingreso de deposito " + depositOrder.orderNumber,
                 },
               ],
-              isUSD: true,
+              isUSD: false,
               source: "depositOrder",
               extraExpenseId: deposit.id,
             },

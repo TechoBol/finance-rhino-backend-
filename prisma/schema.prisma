@@ -318,25 +318,34 @@ model FondoAvance {
   id        Int      @id @default(autoincrement())
   name      String
   amount    Float
-  month     Int
-  year      Int
+  currency  String   @default("USD")
+  month     Int?
+  year      Int?
   createdAt DateTime @default(now())
 }
 
 model RastreoVentas {
-  id             Int            @id @default(autoincrement())
-  branchOfficeId Int
-  branchOffice   BranchOffice   @relation(fields: [branchOfficeId], references: [id])
-  regionalId     Int
-  regional       RegionalOffice @relation(fields: [regionalId], references: [id])
-  startDate      DateTime?
-  endDate        DateTime?
-  depositDate    DateTime?
-  amount         Float?
-  month          Int
-  year           Int
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  id Int @id @default(autoincrement())
 
-  @@unique([branchOfficeId, month, year]) // ← esto faltaba
+  branchOfficeId Int
+  branchOffice   BranchOffice @relation(fields: [branchOfficeId], references: [id])
+
+  regionalId Int
+  regional   RegionalOffice @relation(fields: [regionalId], references: [id])
+
+  startDate   DateTime?
+  endDate     DateTime?
+  depositDate DateTime?
+
+  amount Float?
+
+  currency String @default("USD")
+
+  month Int
+  year  Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([branchOfficeId, month, year])
 }

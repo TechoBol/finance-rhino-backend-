@@ -16,17 +16,19 @@ export const getAllFondosAvance = async (_req: Request, res: Response) => {
 
 export const createFondoAvance = async (req: Request, res: Response) => {
   try {
-    const { name, amount, month, year } = req.body;
-    const now = new Date();
+    const { name, amount, currency } = req.body;
+    console.log(amount)
     const nuevo = await createFondoAvanceRepository({
       name,
       amount: Number(amount),
-      month: month !== undefined ? Number(month) : now.getMonth(), // fallback mes actual
-      year: year !== undefined ? Number(year) : now.getFullYear(), // fallback año actual
+      currency,
     });
+
     res.json(nuevo);
   } catch {
-    res.status(500).json({ error: "Error creando fondo" });
+    res.status(500).json({
+      error: "Error creando fondo",
+    });
   }
 };
 

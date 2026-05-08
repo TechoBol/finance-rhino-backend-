@@ -24,53 +24,87 @@ export const getRastreoVentasRepository = async (month: number, year: number) =>
   });
 };
 
-export const upsertRastreoVentasRepository = async (data: {
-  branchOfficeId: number;
-  regionalId: number;
-  month: number;
-  year: number;
-  startDate?: string;
-  endDate?: string;
-  depositDate?: string;
-  amount?: number;
-}) => {
-  // Buscar si ya existe
-  const existing = await prisma.rastreoVentas.findFirst({
-    where: {
-      branchOfficeId: data.branchOfficeId,
-      month: data.month,
-      year: data.year,
-    },
-  });
+export const upsertRastreoVentasRepository =
+  async (data: {
+    branchOfficeId: number;
+    regionalId: number;
 
-  if (existing) {
-    // Actualizar
-    return prisma.rastreoVentas.update({
-      where: { id: existing.id },
+    month: number;
+    year: number;
+
+    startDate?: string;
+    endDate?: string;
+    depositDate?: string;
+
+    amount?: number;
+
+    currency?: string;
+  }) => {
+    const existing =
+      await prisma.rastreoVentas.findFirst({
+        where: {
+          branchOfficeId:
+            data.branchOfficeId,
+
+          month: data.month,
+          year: data.year,
+        },
+      });
+
+    if (existing) {
+      return prisma.rastreoVentas.update({
+        where: { id: existing.id },
+
+        data: {
+          startDate: data.startDate
+            ? new Date(data.startDate)
+            : existing.startDate,
+
+          endDate: data.endDate
+            ? new Date(data.endDate)
+            : existing.endDate,
+
+          depositDate: data.depositDate
+            ? new Date(data.depositDate)
+            : existing.depositDate,
+
+          amount:
+            data.amount ??
+            existing.amount,
+
+          currency:
+            data.currency ??
+            existing.currency,
+        },
+      });
+    }
+
+    return prisma.rastreoVentas.create({
       data: {
+        branchOfficeId:
+          data.branchOfficeId,
+
+        regionalId: data.regionalId,
+
+        month: data.month,
+        year: data.year,
+
         startDate: data.startDate
           ? new Date(data.startDate)
-          : existing.startDate,
-        endDate: data.endDate ? new Date(data.endDate) : existing.endDate,
+          : undefined,
+
+        endDate: data.endDate
+          ? new Date(data.endDate)
+          : undefined,
+
         depositDate: data.depositDate
           ? new Date(data.depositDate)
-          : existing.depositDate,
-        amount: data.amount ?? existing.amount,
+          : undefined,
+
+        amount: data.amount,
+
+        currency:
+          data.currency || "USD",
       },
     });
-  }
-
-  // Crear nuevo
-  return prisma.rastreoVentas.create({
-    data: {
-      branchOfficeId: data.branchOfficeId,
-      regionalId: data.regionalId,
-      month: data.month,
-      year: data.year,
-      startDate: data.startDate ? new Date(data.startDate) : undefined,
-      endDate: data.endDate ? new Date(data.endDate) : undefined,
-      depositDate: data.depositDate ? new Date(data.depositDate) : undefined,
-      amount: data.amount,
-    },
-  });
-};
+  };
